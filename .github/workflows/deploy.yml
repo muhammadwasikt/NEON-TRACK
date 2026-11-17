@@ -20,11 +20,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Extract project source
+      - name: Extract uploaded source ZIP
         run: |
-          base64 --decode neon-track-source.zip.b64 > /tmp/neon-track-source.zip
-          mkdir -p /tmp/neon-track-source
-          unzip -q /tmp/neon-track-source.zip -d /tmp/neon-track-source
+          unzip -q NEON-TRACK-source.zip -d /tmp/neon-track-source
+          test -f /tmp/neon-track-source/neon-track/package.json
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
