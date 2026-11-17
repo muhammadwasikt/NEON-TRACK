@@ -20,19 +20,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Extract project source
+        run: |
+          base64 --decode neon-track-source.zip.b64 > /tmp/neon-track-source.zip
+          mkdir -p /tmp/neon-track-source
+          unzip -q /tmp/neon-track-source.zip -d /tmp/neon-track-source
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
       - name: Install dependencies
+        working-directory: /tmp/neon-track-source/neon-track
         run: npm install
       - name: Build
+        working-directory: /tmp/neon-track-source/neon-track
         run: npm run build -- --base=/NEON-TRACK/
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: /tmp/neon-track-source/neon-track/dist
 
   deploy:
     environment:
